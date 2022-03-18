@@ -16,6 +16,8 @@ services:
           - MYSQL_DATABASE=UserDB
           - MYSQL_USER=admin
           - MYSQL_PASSWORD=admin123
+        volumes:
+          - /data:/var/lib/mysql
         networks:
           - dpt4webnw
     nginx:
@@ -23,6 +25,8 @@ services:
            context: ./nginx
            dockerfile: Dockerfile
         container_name: nginx
+        depends_on:
+          - app
         ports:
           - 80:80
         networks:
@@ -36,7 +40,6 @@ services:
         container_name: app
         depends_on:
           - mysql
-          - nginx
         restart: always
         ports:
           - "8080:8080"
